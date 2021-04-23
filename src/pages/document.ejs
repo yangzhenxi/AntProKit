@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Ant Design Pro</title>
+    <link rel="icon" href="<%= context.config.publicPath +'favicon.ico'%>" type="image/x-icon" />
+  </head>
+  <body>
+    <noscript>Out-of-the-box mid-stage front/design solution!</noscript>
+    <div id="root">
+			<style>#loading{height:100%;width:100%;position:fixed;z-index:1;margin-top:0;top:0}#loading-center{width:100%;height:100%;position:relative}#loading-center-absolute{position:absolute;left:50%;top:50%;height:50px;width:50px;margin-top:-25px;margin-left:-25px;transform:rotate(45deg);animation:loading-center-absolute 1.5s infinite}.object{width:25px;height:25px;background-color:#1890ff;float:left;border-radius:4px}#object_one{animation:object_one 1.5s infinite}#object_two{animation:object_two 1.5s infinite}#object_three{animation:object_three 1.5s infinite}#object_four{animation:object_four 1.5s infinite}@keyframes loading-center-absolute{100%{transform:rotate(-45deg)}}@keyframes object_one{25%{transform:translate(0,-50px) rotate(-180deg)}100%{transform:translate(0,0) rotate(-180deg)}}@keyframes object_two{25%{transform:translate(50px,0) rotate(-180deg)}100%{transform:translate(0,0) rotate(-180deg)}}@keyframes object_three{25%{transform:translate(-50px,0) rotate(-180deg)}100%{transform:translate(0,0) rotate(-180deg)}}@keyframes object_four{25%{transform:translate(0,50px) rotate(-180deg)}100%{transform:translate(0,0) rotate(-180deg)}}</style>
+      <div id="loading">
+        <div id="loading-center">
+          <div id="loading-center-absolute">
+            <div class="object" id="object_one"></div>
+            <div class="object" id="object_two"></div>
+            <div class="object" id="object_three"></div>
+            <div class="object" id="object_four"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
