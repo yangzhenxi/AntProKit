@@ -1,7 +1,7 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from 'umi';
-
+import type { ProRequestOurParam } from '@/components/Table/ProTable/index';
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<API.CurrentUser>('/api/currentUser', {
@@ -13,7 +13,7 @@ export async function currentUser(options?: { [key: string]: any }) {
 /** 登录接口 POST /api/login/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/login/outLogin', {
-		method: 'POST',
+    method: 'POST',
     ...(options || {}),
   });
 }
@@ -39,16 +39,7 @@ export async function getNotices(options?: { [key: string]: any }) {
 }
 
 /** 获取规则列表 GET /api/rule */
-export async function rule(
-  params: {
-    // query
-    /** 当前的页码 */
-    current?: number;
-    /** 页面的容量 */
-    pageSize?: number;
-  },
-  options?: { [key: string]: any },
-) {
+export async function rule(params?: ProRequestOurParam, options?: { [key: string]: any }) {
   return request<API.RuleList>('/api/rule', {
     method: 'GET',
     params: {
@@ -70,6 +61,7 @@ export async function updateRule(options?: { [key: string]: any }) {
 export async function addRule(options?: { [key: string]: any }) {
   return request<API.RuleListItem>('/api/rule', {
     method: 'POST',
+    params: {},
     ...(options || {}),
   });
 }

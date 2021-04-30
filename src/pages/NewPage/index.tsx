@@ -1,33 +1,18 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import { Button, message, Upload, Space, Modal } from 'antd';
-import { PlusCircleOutlined } from '@ant-design/icons';
-import type { ActionType } from '@ant-design/pro-table';
 import { useRef } from 'react';
 import enums from '@/enum';
-import { rule, addRule, removeRule } from '@/services/ant-design-pro/api';
+import { Button, message, Space, Modal } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
 import { FormModal } from '@/components/Form';
+import { MTable } from '@/components/Table';
+import MIcon from '@/components/Icon';
+import type { ActionType } from '@ant-design/pro-table';
 import type { ProModalRef } from '@/components/Form/FormModal';
-import { ProTableOur } from '@/components/Table';
-import type { ProOurColumns } from '@/components/Table/ProTable';
+import type { MColumns } from '@/components/Table/MTable';
+import { rule, addRule, removeRule } from '@/services/ant-design-pro/api';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const { confirm } = Modal;
-
-const uploadprops = {
-  name: 'file',
-  multiple: true,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange(info: any) {
-    const { status } = info.file;
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
 const NewPage: React.FC = () => {
-  const { Dragger } = Upload;
   /* tableRef */
   const tableRef = useRef<ActionType>();
   const proModalRef = useRef<ProModalRef>(null);
@@ -36,14 +21,10 @@ const NewPage: React.FC = () => {
     tableRef?.current?.reloadAndRest?.();
   };
 
-  interface FormValueType {
-    name?: string;
-    type?: boolean;
-  }
   // 移除函数
-  const handleRemove = (record: API.RuleListItem) => {
+  const handleRemove = (record: API.RuleListItem | (number | string)[]) => {
     confirm({
-      title: `是否要删除${record.name}`,
+      title: `是否要删除`,
       icon: <ExclamationCircleOutlined />,
       content: '点击确定即可删除',
       onOk: async () => {
@@ -60,8 +41,14 @@ const NewPage: React.FC = () => {
     });
   };
 
+  const handleExportData = async (rows: API.RuleListItem[]) => {
+    // 导出操作
+    await removeRule(rows);
+    message.success('删除成功，即将刷新');
+  };
+
   // 新增 和 修改 函数
-  const handleAddUpdate = async (values: FormValueType) => {
+  const handleAddUpdate = async (values: API.RuleListItem) => {
     try {
       await addRule(values);
       message.success('新增成功');
@@ -71,11 +58,12 @@ const NewPage: React.FC = () => {
     }
   };
   // columns
-  const columns: ProOurColumns[] = [
+  const columns: MColumns[] = [
     {
       title: '规则名称',
       dataIndex: 'name',
       hideInForm: false,
+      symbols: 'eq',
       render: (dom) => {
         return <a>{dom}</a>;
       },
@@ -99,7 +87,6 @@ const NewPage: React.FC = () => {
     {
       title: '文件',
       dataIndex: 'avatar',
-      valueType: 'image',
       formItemProps: {
         rules: [
           {
@@ -108,18 +95,11 @@ const NewPage: React.FC = () => {
           },
         ],
       },
-      hideInSearch: true,
-      renderFormItem() {
-        return (
-          <Dragger {...uploadprops}>
-            <p className="ant-upload-drag-icon">
-              <PlusCircleOutlined />
-            </p>
-            <p className="ant-upload-text">单击或拖动文件到此区域上传</p>
-            <p className="ant-upload-hint">支持单个文件上传</p>
-          </Dragger>
-        );
+      render: () => {
+        return <span>文件</span>;
       },
+      formType: 'file',
+      hideInSearch: true,
     },
     {
       title: '状态',
@@ -147,6 +127,7 @@ const NewPage: React.FC = () => {
                 proModalRef.current?.show(record);
               }}
             >
+              <MIcon type="icon-linux" />
               编辑
             </Button>
             <Button type="primary" size="small" onClick={() => handleRemove(record)} danger>
@@ -159,19 +140,32 @@ const NewPage: React.FC = () => {
   ];
   return (
     <PageContainer>
-      <ProTableOur
+      <MTable
         actionRef={tableRef}
         headerTitle="Test"
         columns={columns}
         rowKey="key"
-        requestOur={rule}
-        rowSelection={{}}
-        tableAlertOptionRender={() => {
-          // console.log(selectedRowKeys, selectedRows, onCleanSelected);
+        MRequest={rule}
+        rowSelection={{
+          selections: [],
+        }}
+        tableAlertOptionRender={({ selectedRowKeys, selectedRows }) => {
           return (
             <Space size={16}>
-              <a>批量删除</a>
-              <a>导出数据</a>
+              <a
+                onClick={() => {
+                  handleRemove(selectedRowKeys);
+                }}
+              >
+                批量删除
+              </a>
+              <a
+                onClick={() => {
+                  handleExportData(selectedRows);
+                }}
+              >
+                导出数据
+              </a>
             </Space>
           );
         }}

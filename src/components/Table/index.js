@@ -1,5 +1,3 @@
-import ProTableOur from './ProTable/index'
+import MTable from './MTable/index';
 
-export {
-	ProTableOur
-}
+export { MTable };

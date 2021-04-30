@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { FormInstance } from 'antd';
 import type { ForwardRefRenderFunction } from 'react';
-import type { ProOurColumns } from '@/components/Table/ProTable';
+import type { MColumns } from '@/components/Table/MTable';
 // import type { ProColumns, ProTableProps, RequestData } from '@ant-design/pro-form';
 
 export type ProModalRef = {
@@ -14,7 +14,7 @@ export type ProModalRef = {
 
 type FormModalProps = {
   onOk: (values: any) => void;
-  columns: ProOurColumns[];
+  columns: MColumns[];
   width?: string;
   title?: string;
   maskClosable?: boolean;
@@ -83,7 +83,7 @@ const FormModal: ForwardRefRenderFunction<ProModalRef, FormModalProps> = (props,
       }
       setFormModalVisible(true);
     },
-    hide: () => setFormModalVisible(true),
+    hide: () => setFormModalVisible(false),
     form: formRef.current,
   }));
 

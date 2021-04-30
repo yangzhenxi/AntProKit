@@ -48,12 +48,6 @@
     component: './NewPage',
   },
   {
-    name: 'map',
-    icon: 'table',
-    path: '/map',
-    component: './map',
-  },
-  {
     path: '/',
     redirect: '/welcome',
   },

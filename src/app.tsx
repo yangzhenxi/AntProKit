@@ -8,6 +8,8 @@ import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import routes from '../config/routes';
+import MIcon from '@/components/Icon';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -52,6 +54,15 @@ export async function getInitialState(): Promise<{
 // https://umijs.org/zh-CN/plugins/plugin-layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
+    menuDataRender: () => {
+      return routes.map((item) => {
+        const route = {
+          ...item,
+          icon: <MIcon type="icon-linux" />,
+        };
+        return route;
+      });
+    },
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
